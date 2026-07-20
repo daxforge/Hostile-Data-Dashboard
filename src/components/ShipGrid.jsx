@@ -3,6 +3,7 @@ import ShipCard from "./ShipCard";
 import { Search, SlidersHorizontal, ArrowUpDown, ShieldX, LayoutGrid, Radar, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { playClick, playSelect } from "../utils/synth";
+import { formatCredits } from "../utils/helpers";
 
 const ShipGrid = ({ ships, onViewDetails }) => {
   const [viewMode, setViewMode] = useState("grid"); // "grid" or "radar"
@@ -51,7 +52,7 @@ const ShipGrid = ({ ships, onViewDetails }) => {
 
   // Map filtered ships to circular coordinate systems for the Tactical Radar map
   const radarNodes = useMemo(() => {
-    return filteredShips.map((ship, index) => {
+    return filteredShips.map((ship) => {
       // Deterministic polar conversion coordinates
       let hash = 0;
       const keyStr = ship.id + ship.name;

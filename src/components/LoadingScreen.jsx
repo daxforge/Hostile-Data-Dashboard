@@ -2,20 +2,20 @@ import { useState, useEffect } from "react";
 import { Terminal, Database } from "lucide-react";
 import { motion } from "framer-motion";
 
+const logSteps = [
+  "INITIALIZING AEGIS DATABASE COMM-LINK...",
+  "HANDSHAKING SYSTEM DECRYPTION CODES...",
+  "PARSING VESSEL STRUCTURAL BLUEPRINTS...",
+  "NORMALIZING IRREGULAR RECTOR LOGS...",
+  "SCANNING INTERSTELLAR QUANTUM CORES...",
+  "DECRYPTING ANOMALOUS PLASMA EMISSIONS...",
+  "CONSTRUCTING HOLOGRAM TELEMETRY CONSOLE...",
+  "READY FOR DEPLOYMENT.",
+];
+
 const LoadingScreen = () => {
   const [logs, setLogs] = useState([]);
   const [progress, setProgress] = useState(0);
-
-  const logSteps = [
-    "INITIALIZING AEGIS DATABASE COMM-LINK...",
-    "HANDSHAKING SYSTEM DECRYPTION CODES...",
-    "PARSING VESSEL STRUCTURAL BLUEPRINTS...",
-    "NORMALIZING IRREGULAR RECTOR LOGS...",
-    "SCANNING INTERSTELLAR QUANTUM CORES...",
-    "DECRYPTING ANOMALOUS PLASMA EMISSIONS...",
-    "CONSTRUCTING HOLOGRAM TELEMETRY CONSOLE...",
-    "READY FOR DEPLOYMENT.",
-  ];
 
   // Simulating console log lines typing
   useEffect(() => {

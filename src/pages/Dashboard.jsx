@@ -42,7 +42,10 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    loadShips();
+    const timer = setTimeout(() => {
+      loadShips();
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleOpenDetails = (ship) => {

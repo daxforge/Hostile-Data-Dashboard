@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { Cpu, Users, Coins, Eye, ShieldAlert, Zap } from "lucide-react";
+import { Cpu, Users, Eye, ShieldAlert, Zap } from "lucide-react";
 import clsx from "clsx";
-import { formatCredits, getCoreGlowClass, getStatusMeta } from "../utils/helpers";
+import { getCoreGlowClass, getStatusMeta } from "../utils/helpers";
 import { playClick, playSelect } from "../utils/synth";
 
 const ShipCard = ({ ship, onViewDetails }) => {

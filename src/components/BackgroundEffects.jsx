@@ -1,16 +1,26 @@
 import { motion } from "framer-motion";
 
-const BackgroundEffects = () => {
-  // Generate a set of stable random positions/sizes for particles to avoid hydration mismatches
-  const particles = Array.from({ length: 25 }, (_, i) => ({
+// Generate a static, module-level set of stable positions/sizes for particles
+// to avoid impure Math.random calls during component render.
+const STATIC_PARTICLES = Array.from({ length: 25 }, (_, i) => {
+  const r1 = Math.random();
+  const r2 = Math.random();
+  const r3 = Math.random();
+  const r4 = Math.random();
+  const r5 = Math.random();
+  const r6 = Math.random();
+  return {
     id: i,
-    size: Math.random() * 4 + 1,
-    left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 100}%`,
-    duration: Math.random() * 20 + 20,
-    delay: Math.random() * -20,
-  }));
+    size: r1 * 4 + 1,
+    left: `${r2 * 100}%`,
+    top: `${r3 * 100}%`,
+    duration: r4 * 20 + 20,
+    delay: r5 * -20,
+    xOffset: r6 * 40 - 20,
+  };
+});
 
+const BackgroundEffects = () => {
   return (
     <div className="fixed inset-0 -z-50 overflow-hidden bg-[#020512]">
       {/* Dynamic Grid */}
@@ -32,7 +42,7 @@ const BackgroundEffects = () => {
 
       {/* Floating Space Dust Particles */}
       <div className="absolute inset-0 pointer-events-none">
-        {particles.map((p) => (
+        {STATIC_PARTICLES.map((p) => (
           <motion.div
             key={p.id}
             className="absolute rounded-full bg-cyan-400/40 shadow-[0_0_8px_rgba(6,182,212,0.8)]"
@@ -44,7 +54,7 @@ const BackgroundEffects = () => {
             }}
             animate={{
               y: [0, -300, 0],
-              x: [0, Math.random() * 40 - 20, 0],
+              x: [0, p.xOffset, 0],
               opacity: [0.1, 0.8, 0.1],
             }}
             transition={{

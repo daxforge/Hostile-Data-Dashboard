@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Cpu, HardDrive, ShieldCheck, Zap, Coins, Users, AlertTriangle, Activity } from "lucide-react";
-import { formatCredits, getCoreGlowClass, getStatusMeta } from "../utils/helpers";
+import { X, Cpu, ShieldCheck, Zap, Coins, Users, AlertTriangle, Activity } from "lucide-react";
+import { formatCredits, getStatusMeta } from "../utils/helpers";
 import { playClick, playSelect, playSuccess, playError, playWarp } from "../utils/synth";
 import clsx from "clsx";
 
@@ -16,9 +16,29 @@ const ShipDetailsModal = ({ ship, isOpen, onClose }) => {
   // Trigger sound alerts and logs when modal opens
   useEffect(() => {
     if (isOpen && ship) {
-      setJumpInitiated(false);
-      setJumpProgress(0);
-      
+      const timer = setTimeout(() => {
+        setJumpInitiated(false);
+        setJumpProgress(0);
+        
+        setDiagLogs([
+          "CONNECTING TO AEGIS REMOTE CORRESPONDING SAT-LINK...",
+          "ACQUIRING ENCRYPTED SPEC TELEMETRY CODES...",
+        ]);
+
+        const logTemplates = [
+          `RESOLVING VESSEL PORT MANUFACTURER: [${ship.manufacturer.toUpperCase()}]`,
+          `CHECKING CORE STATUS STABILITY: [${ship.coreType.toUpperCase()}] ENGINE`,
+          `CALIBRATING WARP FIELD COILS & PRIMARY SHIELD GENERATOR...`,
+          `DIAGNOSTICS COMPLETED. SUB-LINK STATUS: ${ship.status.toUpperCase()}`,
+        ];
+
+        logTemplates.forEach((log, idx) => {
+          setTimeout(() => {
+            setDiagLogs((prev) => [...prev, log]);
+          }, (idx + 1) * 800);
+        });
+      }, 0);
+
       // Play alert chime if vessel has reactor anomalies
       if (ship.isCritical) {
         setTimeout(() => playError(), 150);
@@ -26,23 +46,7 @@ const ShipDetailsModal = ({ ship, isOpen, onClose }) => {
         setTimeout(() => playClick(), 100);
       }
 
-      setDiagLogs([
-        "CONNECTING TO AEGIS REMOTE CORRESPONDING SAT-LINK...",
-        "ACQUIRING ENCRYPTED SPEC TELEMETRY CODES...",
-      ]);
-
-      const logTemplates = [
-        `RESOLVING VESSEL PORT MANUFACTURER: [${ship.manufacturer.toUpperCase()}]`,
-        `CHECKING CORE STATUS STABILITY: [${ship.coreType.toUpperCase()}] ENGINE`,
-        `CALIBRATING WARP FIELD COILS & PRIMARY SHIELD GENERATOR...`,
-        `DIAGNOSTICS COMPLETED. SUB-LINK STATUS: ${ship.status.toUpperCase()}`,
-      ];
-
-      logTemplates.forEach((log, idx) => {
-        setTimeout(() => {
-          setDiagLogs((prev) => [...prev, log]);
-        }, (idx + 1) * 800);
-      });
+      return () => clearTimeout(timer);
     }
   }, [isOpen, ship]);
 
@@ -108,7 +112,6 @@ const ShipDetailsModal = ({ ship, isOpen, onClose }) => {
   if (!isOpen || !ship) return null;
 
   const statusMeta = getStatusMeta(ship.status);
-  const glowClass = getCoreGlowClass(ship.coreType);
 
   const handleDismiss = () => {
     playSelect();
